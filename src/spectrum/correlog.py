@@ -49,14 +49,14 @@ def CORRELOGRAMPSD(X, Y=None, lag=-1, window='hamming',
     The exact power spectral density is the Fourier transform of the
     autocorrelation sequence:
 
-    .. math:: P_{xx}(f) = T \sum_{m=-\infty}^{\infty} r_{xx}[m] exp^{-j2\pi fmT}
+    .. math:: P_{xx}(f) = T \\sum_{m=-\\infty}^{\\infty} r_{xx}[m] exp^{-j2\\pi fmT}
 
     The correlogram method of PSD estimation substitutes a finite sequence of
-    autocorrelation estimates :math:`\hat{r}_{xx}` in place of :math:`r_{xx}`.
+    autocorrelation estimates :math:`\\hat{r}_{xx}` in place of :math:`r_{xx}`.
     This estimation can be computed with :func:`xcorr` or :func:`CORRELATION` by
     chosing a proprer lag `L`. The estimated PSD is then
 
-    .. math:: \hat{P}_{xx}(f) = T \sum_{m=-L}^{L} \hat{r}_{xx}[m] exp^{-j2\pi fmT}
+    .. math:: \\hat{P}_{xx}(f) = T \\sum_{m=-L}^{L} \\hat{r}_{xx}[m] exp^{-j2\\pi fmT}
 
     The lag index must be less than the number of data samples `N`. Ideally, it
     should be around `L/10` [Marple]_ so as to avoid greater statistical
@@ -66,11 +66,11 @@ def CORRELOGRAMPSD(X, Y=None, lag=-1, window='hamming',
     reduce the bias in the estimate, a tapering window is normally used and lead
     to the so-called Blackman and Tukey correlogram:
 
-    .. math:: \hat{P}_{BT}(f) = T \sum_{m=-L}^{L} w[m] \hat{r}_{xx}[m] exp^{-j2\pi fmT}
+    .. math:: \\hat{P}_{BT}(f) = T \\sum_{m=-L}^{L} w[m] \\hat{r}_{xx}[m] exp^{-j2\\pi fmT}
 
     The correlogram for the cross power spectral estimate is
 
-    .. math:: \hat{P}_{xx}(f) = T \sum_{m=-L}^{L} \hat{r}_{xx}[m] exp^{-j2\pi fmT}
+    .. math:: \\hat{P}_{xx}(f) = T \\sum_{m=-L}^{L} \\hat{r}_{xx}[m] exp^{-j2\\pi fmT}
 
     which is computed if :attr:`Y` is not provide. In such case,
     :math:`r_{yx} = r_{xy}` so we compute the correlation only once.

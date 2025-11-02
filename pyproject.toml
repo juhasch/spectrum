@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spectrum"
+version = "0.9.0"
+description = "Spectrum Analysis Tools"
+readme = { file = "README.md", content-type = "text/markdown" }
+authors = [
+  { name = "Thomas Cokelaer", email = "cokelaer@gmail.com" },
+]
+license = { text = "BSD-3-Clause" }
+requires-python = ">=3.7"
+dependencies = [
+  "numpy",
+  "scipy",
+  "matplotlib",
+]
+
+[project.optional-dependencies]
+plot = ["matplotlib"]
+testing = [
+  "pytest",
+  "pytest-cov",
+  "pytest-xdist",
+  "pytest-mock",
+  "pytest-timeout",
+  "coveralls",
+]
+doc = ["sphinx", "sphinx_rtd_theme"]
+
+[project.urls]
+Homepage = "https://github.com/cokelaer/spectrum"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["spectrum*"]
+
+[tool.setuptools.package-data]
+"spectrum.data" = ["*"]
+
+[tool.setuptools.exclude-package-data]
+"*" = ["*.so", "*.pyd", "*.dll"]
+
+

@@ -6,7 +6,7 @@ from spectrum.errors import *
 from numpy.testing import assert_array_almost_equal
 import pylab
 data = marple_data
-from easydev import TempFile
+import tempfile
 
 
 def test_psd_module_range():
@@ -222,7 +222,7 @@ def test_psd_others():
     p.run()
     p.reflection
     p.plot(ax=pylab.gca())
-    with TempFile() as fh:
+    with tempfile.NamedTemporaryFile() as fh:
         p.plot(norm=True, ylim=[-80,80], filename=fh.name)
 
     try:

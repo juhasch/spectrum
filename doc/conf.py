@@ -40,8 +40,6 @@ title = "spectrum"
 copyright = author + ", 2012-2017"
 project = "spectrum"
 
-import easydev
-from easydev import get_path_sphinx_themes
 
 # -- General configuration -----------------------------------------------------
 
