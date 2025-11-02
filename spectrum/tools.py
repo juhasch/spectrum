@@ -169,7 +169,7 @@ def pow2db(x):
 
     The relationship between power and decibels is:
 
-    .. math::    X_{dB} = 10 * \log_{10}(x)
+    .. math::    X_{dB} = 10 * \\log_{10}(x)
 
     .. doctest::
 
@@ -236,7 +236,7 @@ def mag2db(x):
 
     The relationship between magnitude and decibels is:
 
-    .. math::    X_{dB} = 20 * \log_{10}(x)
+    .. math::    X_{dB} = 20 * \\log_{10}(x)
 
     .. doctest::
 
@@ -250,9 +250,9 @@ def mag2db(x):
 
 
 def log10(data):
-    np.seterr(divide='ignore')
+    old_settings = np.seterr(divide='ignore', invalid='ignore')
     data = np.log10(data)
-    np.seterr(divide='warn')
+    np.seterr(**old_settings)
     return data
 
 

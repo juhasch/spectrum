@@ -1,5 +1,5 @@
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
-from numpy import *
+import numpy as np
 from spectrum.tools import *
 
 
@@ -14,11 +14,11 @@ def test_nextpow2():
 
 def test_swapsides():
     from spectrum.tools import _swapsides
-    assert all(_swapsides([-2,-1,1,2]) == array([2,-2,-1]))
+    assert all(_swapsides([-2,-1,1,2]) == np.array([2,-2,-1]))
 
 def test_twosided_zero():
     from spectrum.tools import _twosided_zerolag
-    assert all(_twosided_zerolag([3,2,1],4) == array([1,2,3,4,3,2,1]))
+    assert all(_twosided_zerolag([3,2,1],4) == np.array([1,2,3,4,3,2,1]))
 
 def test_pow2db_db2pow():
     p1 = 10.
@@ -49,7 +49,7 @@ def _test_twosided_zerolag():
 def test_twosided():
     a = [1,2,3]
     b = twosided(a)
-    assert_array_almost_equal(b, array([3, 2, 1, 2, 3]))
+    assert_array_almost_equal(b, np.array([3, 2, 1, 2, 3]))
 
 def _test_swap_sides():
     x = [-2, -1, 1, 2]

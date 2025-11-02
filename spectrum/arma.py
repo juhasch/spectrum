@@ -104,10 +104,14 @@ def arma2psd(A=None, B=None, rho=1., T=1., NFFT=4096, sides='default',
         numf = fft(num, NFFT)
 
     # Changed in version 0.6.9 (divided by T instead of multiply)
+    # Add small epsilon to avoid divide-by-zero when abs(denf)**2 is zero
+    eps = np.finfo(float).eps
     if A is not None and B is not None:
-        psd = rho / T * abs(numf)**2. / abs(denf)**2.
+        denom = abs(denf)**2. + eps
+        psd = rho / T * abs(numf)**2. / denom
     elif A is not None:
-        psd = rho / T / abs(denf)**2.
+        denom = abs(denf)**2. + eps
+        psd = rho / T / denom
     elif B is not None:
         psd = rho / T * abs(numf)**2.
 

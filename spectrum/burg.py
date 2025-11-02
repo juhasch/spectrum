@@ -95,7 +95,7 @@ class pburg(ParametricSpectrum):
     Another example based on a real data set is shown here below. Note here
     that we set the scale_by_freq value to False and True. False should give
     results equivalent to octave or matlab convention while setting to True
-    implies that the data is multiplied by  :math:`2\pi df` where 
+    implies that the data is multiplied by  :math:`2\\pi df` where 
     :math:`df = sampling / N`.
 
     .. plot::

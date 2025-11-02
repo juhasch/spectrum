@@ -199,7 +199,7 @@ def WelchPeriodogram(data, NFFT=None,  sampling=1., **kargs):
     from pylab import psd
     spectrum = Spectrum(data, sampling=1.)
 
-    P = psd(data, NFFT, Fs=sampling, **kargs)
+    P = psd(data, NFFT=NFFT, Fs=sampling, **kargs)
     spectrum.psd = P[0]
     #spectrum.__Spectrum_sides = 'twosided'
 

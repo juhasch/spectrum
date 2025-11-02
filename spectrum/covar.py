@@ -164,8 +164,10 @@ def arcovar_marple(x, order):
         if m != order-1:
             pass
         else:
-            pf = pf / float(N-m-1)
-            pb = pb / float(N-m-1)
+            denom = float(N-m-1)
+            if denom > 0:
+                pf = pf / denom
+                pb = pb / denom
             #if debug:
             #    print('ENDING', N-m-1)
             break

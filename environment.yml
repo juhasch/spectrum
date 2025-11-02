@@ -11,9 +11,6 @@ dependencies:
 - pandas
 - matplotlib
 - scipy
-- easydev
 - numpydoc
 - sphinx
 - sphinx-gallery
-#- pip:
-#  - easydev>=0.9.21

@@ -18,10 +18,10 @@ from ctypes import POINTER
 from os.path import join as pj
 
 import numpy as np
-from numpy.ctypeslib import load_library
 
 from spectrum.psd import Spectrum
 from spectrum.tools import nextpow2
+from spectrum.dpss_numba import dpss_tapers
 
 """
 
@@ -39,18 +39,6 @@ gcc -shared -o sum.so sum.o
 Note that on OSX -shared should be replaced by -dynamiclib and sum.so should be called sum.dylib Then you can do
 
 """
-
-# Import shared mtspec library
-if hasattr(sys, "frozen"):
-    p = os.path.abspath(os.path.dirname(sys.executable))
-else:
-    p = os.path.abspath(os.path.dirname(__file__))
-
-lib_name = "mydpss"
-try:
-    mtspeclib = load_library(lib_name, p)
-except:
-    print("Library %s not found" % lib_name)
 
 
 class MultiTapering(Spectrum):
@@ -222,16 +210,25 @@ def pmtm(x, NW=None, k=None, NFFT=None, e=None, v=None, method="adapt", show=Fal
         wk = np.ones((NFFT, 1)) * eigenvalues.transpose()
 
         # converges very quickly but for safety; set i<100
+        eps = np.finfo(float).eps
         while sum(np.abs(S - S1)) / NFFT > tol and i < 100:
             i = i + 1
             # calculate weights
             b1 = np.multiply(S, np.ones((1, nwin)))
             b2 = np.multiply(S, eigenvalues.transpose()) + np.ones((NFFT, 1)) * a.transpose()
+            # Add small epsilon to avoid division by zero
+            b2 = b2 + eps
             b = b1 / b2
 
             # calculate new spectral estimate
             wk = (b**2) * (np.ones((NFFT, 1)) * eigenvalues.transpose())
-            S1 = sum(wk.transpose() * Sk.transpose()) / sum(wk.transpose())
+            # Sum over windows (axis=0) to get per-frequency-bin sums
+            wk_sum = np.sum(wk.transpose(), axis=0)  # shape: (NFFT,)
+            # Avoid division by zero element-wise
+            numerator = np.sum(wk.transpose() * Sk.transpose(), axis=0)  # shape: (NFFT,)
+            # Add small epsilon to wk_sum to avoid division by zero warnings
+            wk_sum = np.where(wk_sum > eps, wk_sum, eps)
+            S1 = numerator / wk_sum
             S1 = S1.reshape(NFFT, 1)
             S, S1 = S1, S  # swap S and S1
         weights = wk
@@ -329,23 +326,11 @@ def dpss(N, NW=None, k=None):
     if k is None:
         k = min(round(2 * NW), N)
         k = int(max(k, 1))
-    mtspeclib.multitap.restype = None
+    # Compute tapers via Python/numba implementation
+    tapers, tapsum = dpss_tapers(N, float(NW), k)
 
-    lam = np.zeros(k, dtype=float)
-    tapers = np.zeros(k * N, dtype=float)
-    tapsum = np.zeros(k, dtype=float)
-
-    res = mtspeclib.multitap(
-        c_int(N),
-        c_int(k),
-        lam.ctypes.data_as(c_void_p),
-        c_float(NW),
-        tapers.ctypes.data_as(c_void_p),
-        tapsum.ctypes.data_as(c_void_p),
-    )
-
-    # normalisation by sqtr(N). It is required to have normalised windows
-    tapers = tapers.reshape(k, N).transpose() / np.sqrt(N)
+    # normalisation by sqrt(N). It is required to have normalised windows
+    tapers = tapers / np.sqrt(N)
 
     for i in range(k):
         # By convention (Percival and Walden, 1993 pg 379)

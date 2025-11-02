@@ -189,7 +189,7 @@ class Spectrum(object):
     :param float sampling: sampling frequency of the input :attr:`data`
     :param str detrend: detrend method ([None,'mean']) to apply on the input data before
         computing the PSD. See :attr:`detrend`.
-    :param bool scale_by_freq: divide the final PSD by :math:`2*\pi/df`
+    :param bool scale_by_freq: divide the final PSD by :math:`2*\\pi/df`
     :param int NFFT: total length of the final data sets (padded with 
         zero if needed; default is 4096)
 
@@ -345,7 +345,7 @@ class Spectrum(object):
         self.__scale_by_freq = scale
         self.modified = True
     scale_by_freq = property(fget=_getScale, fset=_setScale,
-                            doc="scale the PSD by :math:`2*\pi/df`")
+                            doc="scale the PSD by :math:`2*\\pi/df`")
 
     def _getNFFT(self):
         return self.__NFFT
@@ -697,6 +697,7 @@ class Spectrum(object):
         pylab.grid(True)
 
         if ylim:
+            pylab.yscale('linear')
             plt_ylim(ylim)
 
         if sides == 'onesided':
@@ -764,7 +765,7 @@ class ParametricSpectrum(Spectrum):
     :param float sampling: sampling frequency of the input :attr:`data`
     :param str detrend:    detrend method ([None,'mean']) to apply on the input
         data before computing the PSD. See :attr:`detrend`.
-    :param bool scale_by_freq: Divide the final PSD by :math:`2*\pi/df`
+    :param bool scale_by_freq: Divide the final PSD by :math:`2*\\pi/df`
 
     In addition you need specific parameters such as:
 
@@ -904,7 +905,7 @@ class FourierSpectrum(Spectrum):
     :param float sampling: sampling frequency of the input :attr:`data`
     :param str detrend:    detrend method ([None,'mean']) to apply on the input
         data before computing the PSD. See :attr:`detrend`.
-    :param bool scale_by_freq: Divide the final PSD by :math:`2*\pi/df`
+    :param bool scale_by_freq: Divide the final PSD by :math:`2*\\pi/df`
     :param int NFFT: total length of the data given to the FFT
 
     In addition you need specific parameters such as:

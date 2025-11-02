@@ -58,6 +58,34 @@ def test_mtm():
     mtm._other_dpss_method(64,4,10)
 
 
+def test_dpss_vs_other_dpss():
+    """Test that dpss and _other_dpss_method give the same results."""
+    import numpy as np
+    
+    # Test several parameter combinations
+    test_params = [
+        (512, 2.5, 4),
+        (256, 3.0, 4),
+        (1024, 4.0, 8),
+    ]
+    
+    for N, NW, k in test_params:
+        # Compute using dpss (C implementation)
+        tapers1, eigenvalues1 = dpss(N, NW, k=k)
+        
+        # Compute using _other_dpss_method (SciPy implementation)
+        tapers2, eigenvalues2 = mtm._other_dpss_method(N, NW, k)
+        
+        # _other_dpss_method returns (k, N), dpss returns (N, k), so transpose
+        tapers2_t = tapers2.T
+        
+        # Check that tapers are equal (within machine precision)
+        assert np.allclose(tapers1, tapers2_t), f"Tapers differ for N={N}, NW={NW}, k={k}"
+        
+        # Check that eigenvalues are equal (within machine precision)
+        assert np.allclose(eigenvalues1, eigenvalues2), f"Eigenvalues differ for N={N}, NW={NW}, k={k}"
+
+
 def test_Multitapering():
     p = MultiTapering(data_two_freqs(), 4,2)
     p()

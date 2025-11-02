@@ -195,7 +195,10 @@ def rlevinson(a, efinal):
     U[:, p-1] = numpy.conj(a[-1::-1]) # Prediction coefficients of order p
 
     p = p -1
-    e = numpy.zeros(p)
+    if realdata == True:
+        e = numpy.zeros(p)
+    else:
+        e = numpy.zeros(p, dtype=complex)
 
     # First we find the prediction coefficients of smaller orders and form the
     # Matrix U
