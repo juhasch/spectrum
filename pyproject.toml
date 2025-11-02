@@ -16,6 +16,7 @@ dependencies = [
   "numpy",
   "scipy",
   "matplotlib",
+  "numba"
 ]
 
 [project.optional-dependencies]
@@ -34,10 +35,10 @@ doc = ["sphinx", "sphinx_rtd_theme"]
 Homepage = "https://github.com/cokelaer/spectrum"
 
 [tool.setuptools]
-package-dir = {"" = "src"}
+package-dir = {"" = "."}
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
 include = ["spectrum*"]
 
 [tool.setuptools.package-data]
